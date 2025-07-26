@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jary Web Bug</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(136,0,255,0.3) 0%, rgba(0,0,0,0.8) 100%);
+      animation: galaxy 100s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes galaxy {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-50%, -50%); }
+    }
+
+    .stars {
+      width: 2px;
+      height: 2px;
+      background: white;
+      box-shadow: 
+        100px 200px white,
+        200px 300px white,
+        400px 100px white,
+        600px 500px white,
+        800px 200px white,
+        1000px 400px white;
+      animation: sparkle 2s infinite ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.2; }
+    }
+
+    h1 {
+      color: #bb00ff;
+      font-size: 30px;
+      margin-top: 40px;
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      width: 80%;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      background-color: #8000ff;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 10px #bb00ff, 0 0 20px #bb00ff;
+      animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 10px #bb00ff, 0 0 20px #bb00ff; }
+      100% { box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #ccc;
+      margin-top: 30px;
+      white-space: pre-line;
+    }
+
+    .credit {
+      font-size: 13px;
+      color: #66ff66;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    #login-container, #main-content {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div id="login-container">
+    <h1>MASUKAN USER DAN PW YANG DI BERIKAN JARY</h1>
+    <input type="text" id="user" placeholder="Username"><br>
+    <input type="password" id="pass" placeholder="Password"><br>
+    <button onclick="login()">LOGIN</button>
+  </div>
+
+  <div id="main-content">
+    <h1>JARY NEW UPDATE</h1>
+    <p>MASUKAN NO AWALAN 62</p>
+    <input type="text" id="target" placeholder="628xxxxxxx" /><br>
+
+    <button onclick="kirim('DELAY')">DELAY</button>
+    <button onclick="kirim('CRASH')">CRASH</button>
+    <button onclick="kirim('UI')">UI</button>
+    <button onclick="kirim('FORCE')">FORCE</button>
+    <button onclick="kirim('BLANK')">BLANK</button>
+    <button onclick="kirim('BULLDOZ')">BULLDOZ</button>
+
+    <div class="footer">
+      TANGSTO<br>
+      JARY [DEVELOPER]<br>
+      TAZI [SUPORT]<br>
+      CALZ [EDITING]<br>
+      DAFZ [API]<br>
+      YANZ [SCRIP]<br>
+      ALIF [TK]<br>
+      VALZXD [OWN]
+    </div>
+
+    <div class="credit">Created By JaryDeveloper</div>
+  </div>
+
+  <script>
+    // Tampilkan form login awal
+    document.getElementById("login-container").style.display = "block";
+
+    function login() {
+      const username = document.getElementById("user").value.trim();
+      const password = document.getElementById("pass").value.trim();
+
+      if (username === "Jary" && password === "12") {
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+      } else {
+        alert("User/Password salah!");
+      }
+    }
+
+    async function kirim(jenis) {
+      const target = document.getElementById("target").value.trim();
+      if (!target.startsWith("62")) {
+        alert("Nomor harus diawali 62!");
+        return;
+      }
+
+      const nama = prompt("Masukkan Nama Pengirim:");
+      if (!nama) return;
+
+      const token = "7477722076:AAEU0iVd2Hxn6C4ipUwrN1LZKW7NYThwSiQ";
+      const chatId = "6173091470";
+      const pesan = `PENGIRIM: ${nama}\nJENIS BUG: ${jenis}\nTARGET: ${target}`;
+
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      try {
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text: pesan })
+        });
+        alert("SUKSES SENDING BUGG TUNGGU SAMPE DI KONFIR AMA JARY✅️");
+      } catch (err) {
+        alert("Gagal mengirim.");
+      }
+    }
+  </script>
+</body>
+</html>
