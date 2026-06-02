@@ -1,194 +1,431 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>BUG JARY V3</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
-    body {
-      margin: 0;
-      background: url('https://files.catbox.moe/7jf12v.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    #container {
-      background: rgba(0, 0, 0, 0.6);
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 25px rgba(255, 0, 100, 0.6);
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-      backdrop-filter: blur(10px);
-      animation: zoomIn 0.5s ease;
-    }
-    @keyframes zoomIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    #loading {
-      font-size: 32px;
-      color: red;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    input {
-      padding: 12px;
-      font-size: 18px;
-      width: 90%;
-      max-width: 400px;
-      margin: 15px 0;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-    button {
-      padding: 15px 25px;
-      font-size: 18px;
-      margin: 10px;
-      border-radius: 15px;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      background: rgba(0, 0, 0, 0.4);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 15px #ff0055, 0 0 25px #ff0055 inset;
-      transition: 0.2s ease;
-    }
-    button:hover {
-      transform: scale(1.05);
-    }
-    .btn-purple {
-      box-shadow: 0 0 15px #9b00ff, 0 0 25px #9b00ff inset;
-    }
-    img.icon {
-      width: 24px;
-      height: 24px;
-    }
-    .success {
-      font-weight: bold;
-      background: #111;
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>WealthWave | Investasi Digital Masa Depan</title>
+    <!-- Font Awesome Icons (No Emoji) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Modern Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Chart.js untuk grafik mini -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0A0F1E 0%, #0C1222 100%);
+            min-height: 100vh;
+            color: #EFF3FC;
+        }
+
+        /* Modern Glassmorphism Container */
+        .glass-card {
+            background: rgba(18, 25, 45, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #3B82F6, #2563EB);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            transition: 0.2s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #2563EB, #1D4ED8);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3B82F6;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #3B82F6;
+            font-weight: 500;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: rgba(59,130,246,0.15);
+        }
+
+        input, textarea, select {
+            background: #0F1629;
+            border: 1px solid #2D3A5E;
+            border-radius: 1.2rem;
+            padding: 12px 18px;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .balance-box {
+            background: linear-gradient(135deg, #1E2A3E, #0F172A);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            border-left: 4px solid #FBBF24;
+        }
+
+        .icon-badge {
+            font-size: 1.8rem;
+            margin-right: 12px;
+            color: #FBBF24;
+        }
+
+        .status-up {
+            color: #10B981;
+        }
+        .status-down {
+            color: #EF4444;
+        }
+
+        .history-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid #3B82F6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 480px;
+            background: #0F172F;
+            border-radius: 2rem;
+            padding: 1.8rem;
+            border: 1px solid #2D3A5E;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1E293B;
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            z-index: 1100;
+            border-left: 4px solid #3B82F6;
+        }
+
+        @media (max-width: 640px) {
+            .balance-box { padding: 1rem; }
+            .btn-primary { padding: 8px 16px; }
+        }
+    </style>
 </head>
 <body>
-<div id="container">
-  <div id="loading">AWAIT...</div>
 
-  <div id="login" style="display:none;">
-    <img src="https://files.catbox.moe/e7zw8g.jpg" width="100"><br><br>
-    <h2>Masukkan Password</h2>
-    <input type="password" id="passwordInput" placeholder="Password"><br>
-    <button onclick="checkPassword()">MASUK</button>
-  </div>
+<div id="app">
+    <!-- MODAL LOGIN / REGISTER -->
+    <div id="authModal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <i class="fas fa-chart-line" style="font-size: 2.5rem; color: #3B82F6;"></i>
+                <h2 style="margin-top: 8px;">WealthWave</h2>
+                <p style="color: #94A3B8;">Akses pasar digital</p>
+            </div>
 
-  <div id="main" style="display:none;">
-    <h1>WELCOME JARY BUG</h1>
-    <input type="text" id="target" placeholder="Masukkan No Target"><br>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div style="margin-bottom: 16px;">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="loginEmail" placeholder="email@contoh.com" style="width: 100%; margin-top: 6px;">
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" style="width: 100%; margin-top: 6px;">
+                </div>
+                <button class="btn-primary" style="width: 100%;" id="doLoginBtn"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+                <p style="text-align: center; margin-top: 18px;">Belum punya akun? <a href="#" id="showRegBtn" style="color:#60A5FA;">Daftar Sekarang</a></p>
+            </div>
 
-    <div>
-      <button onclick="handleBug('EASY')">
-        <img class="icon" src="https://files.catbox.moe/693gic.jpg"> EASY
-      </button>
-      <button onclick="handleBug('MEDIUM')">
-        <img class="icon" src="https://files.catbox.moe/693gic.jpg"> MEDIUM
-      </button>
-      <button onclick="handleBug('HARD')">
-        <img class="icon" src="https://files.catbox.moe/693gic.jpg"> HARD
-      </button>
-      <button class="btn-purple" onclick="window.location.href='https://t.me/JaryIsHereu'">
-        <img class="icon" src="https://files.catbox.moe/pgorat.jpg"> OWNER
-      </button>
+            <!-- Register Form (hidden awal) -->
+            <div id="registerForm" style="display: none;">
+                <div style="margin-bottom: 12px;">
+                    <label><i class="fas fa-user"></i> Nama Akun</label>
+                    <input type="text" id="regName" placeholder="John Doe" style="width: 100%; margin-top: 6px;">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="regEmail" placeholder="email@contoh.com" style="width: 100%; margin-top: 6px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="regPassword" placeholder="minimal 4 karakter" style="width: 100%; margin-top: 6px;">
+                </div>
+                <button class="btn-primary" style="width: 100%;" id="doRegBtn"><i class="fas fa-user-plus"></i> Buat Akun</button>
+                <p style="text-align: center; margin-top: 18px;">Sudah punya akun? <a href="#" id="showLoginBtn" style="color:#60A5FA;">Login</a></p>
+            </div>
+        </div>
     </div>
 
-    <div class="success" id="successBox" style="display:none;"></div>
-  </div>
+    <!-- MAIN DASHBOARD (setelah login) -->
+    <div id="dashboard" style="display: none; padding: 20px; max-width: 1300px; margin: 0 auto;">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-chart-simple" style="font-size: 28px; color:#3B82F6;"></i>
+                <h2>Wealth<span style="font-weight:300;">Wave</span></h2>
+            </div>
+            <div>
+                <span id="userNameDisplay" style="margin-right: 20px; font-weight:500;"></span>
+                <button class="btn-outline" id="logoutBtn"><i class="fas fa-arrow-right-from-bracket"></i> Keluar</button>
+            </div>
+        </div>
+
+        <!-- Saldo & Rupiah area -->
+        <div class="glass-card balance-box" style="margin: 20px 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+            <div>
+                <div style="font-size: 0.9rem; opacity: 0.7;">TOTAL SALDO</div>
+                <div style="font-size: 3rem; font-weight: 700; letter-spacing: -1px;">$ <span id="totalDollar">0.00</span></div>
+                <div style="margin-top: 8px;"><i class="fas fa-chart-line"></i> Kurs hari ini: 1 USD = Rp15.420</div>
+            </div>
+            <div>
+                <div style="font-size: 0.9rem; opacity: 0.7;">Setara Rupiah (IDR)</div>
+                <div style="font-size: 2rem; font-weight: 600;">Rp <span id="totalRupiah">0</span></div>
+                <div><i class="fas fa-wallet"></i> Siap tarik kapan saja</div>
+            </div>
+        </div>
+
+        <!-- BUILDING / INVESTASI RANDOM naik turun -->
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <h3><i class="fas fa-building"></i> Active Building</h3>
+                <button id="refreshInvestBtn" class="btn-outline" style="font-size: 0.85rem;"><i class="fas fa-rotate-right"></i> Refresh / Siklus Baru</button>
+            </div>
+            <div style="margin: 16px 0;">
+                <div id="investValueBox" style="font-size: 2rem; font-weight: bold; display: flex; align-items: baseline; gap: 12px;">
+                    $ <span id="currentInvestValue">100.00</span>
+                    <span id="trendIcon" style="font-size: 1.2rem;"><i class="fas fa-minus-circle"></i></span>
+                </div>
+                <div style="margin-top: 8px;">Nilai investasi <span id="trendPercent">0%</span> <span id="trendText">(stabil)</span></div>
+                <progress id="investProgress" value="50" max="100" style="width: 100%; height: 8px; border-radius: 10px; margin-top: 12px;"></progress>
+                <button id="investActionBtn" class="btn-primary" style="margin-top: 20px; width: 100%;"><i class="fas fa-chart-simple"></i> Kunci Keuntungan (Claim)</button>
+            </div>
+        </div>
+
+        <!-- Grid: TOP UP & WITHDRAW + HISTORY -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+            <!-- Top Up Card -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3><i class="fas fa-arrow-up"></i> Top Up Saldo</h3>
+                <div style="margin: 15px 0;">
+                    <label>Nominal Top Up (USD)</label>
+                    <input type="number" id="topupAmount" placeholder="min 10 USD" step="1" min="10" style="width: 100%; margin: 8px 0;">
+                    <div style="font-size: 0.8rem; color:#94A3B8;">*QRIS pembayaran Rp (kurs 15.420)</div>
+                </div>
+                <button id="showQrisBtn" class="btn-primary" style="width: 100%;"><i class="fas fa-qrcode"></i> Generate QRIS & Upload Bukti</button>
+                
+                <!-- Area upload bukti (muncul setelah klik) -->
+                <div id="uploadBuktiArea" style="display: none; margin-top: 20px;">
+                    <div style="background: #0A0F1E; border-radius: 1.5rem; padding: 12px; text-align: center;">
+                        <img id="qrisImage" src="https://files.catbox.moe/l95y58.jpg" style="width: 140px; border-radius: 16px;">
+                        <p style="margin: 8px 0;">Transfer ke QRIS diatas, lalu upload bukti.</p>
+                        <input type="file" id="buktiFile" accept="image/*" style="margin: 8px 0; width: 100%;">
+                        <button id="submitBuktiBtn" class="btn-primary" style="width: 100%;"><i class="fas fa-paper-plane"></i> Kirim Bukti (ACC Otomatis)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdraw Card -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3><i class="fas fa-arrow-down"></i> Penarikan Dana</h3>
+                <div style="margin: 15px 0;">
+                    <label>Nomor Dana (DANA)</label>
+                    <input type="text" id="withdrawPhone" placeholder="081234567890" style="width: 100%; margin-bottom: 12px;">
+                    <label>Nominal USD</label>
+                    <input type="number" id="withdrawAmount" placeholder="Min 20 USD" step="1" min="20" style="width: 100%;">
+                </div>
+                <button id="doWithdrawBtn" class="btn-primary" style="width: 100%;"><i class="fas fa-hand-holding-usd"></i> Ajukan Tarik Saldo</button>
+                <p style="font-size: 12px; margin-top: 10px;">*Proses via bot Telegram (terintegrasi)</p>
+            </div>
+
+            <!-- History + Info -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3><i class="fas fa-clock"></i> Aktivitas Terakhir</h3>
+                <div id="historyList" style="max-height: 240px; overflow-y: auto; margin-top: 12px;">
+                    <div class="history-item" style="opacity:0.7;">Belum ada aktivitas</div>
+                </div>
+                <button id="clearHistory" class="btn-outline" style="width: 100%; margin-top: 12px;"><i class="fas fa-trash-can"></i> Bersihkan History</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-  const correctPassword = "Jary3";
-  const cooldownKey = "globalBugCooldown";
-  const cooldownTime = 5 * 60 * 1000; // 5 menit
+    // ---------- STORAGE ----------
+    let users = JSON.parse(localStorage.getItem('wealthwave_users')) || [];
+    let currentUser = null;
+    let investInterval = null;
 
-  function show(id) {
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("login").style.display = "none";
-    document.getElementById("main").style.display = "none";
-    document.getElementById(id).style.display = "block";
-  }
-
-  window.onload = () => {
-    show("loading");
-    setTimeout(() => show("login"), 2000);
-  }
-
-  function checkPassword() {
-    const input = document.getElementById("passwordInput").value;
-    if (input === correctPassword) {
-      show("main");
-    } else {
-      alert("Password salah!");
-    }
-  }
-
-  function handleBug(type) {
-    const now = Date.now();
-    let lastUsed = localStorage.getItem(cooldownKey);
-
-    if (lastUsed && now - parseInt(lastUsed) < cooldownTime) {
-      const remaining = Math.ceil((cooldownTime - (now - lastUsed)) / 1000);
-      alert(`Cooldown aktif! Tunggu ${remaining} detik lagi.`);
-      return;
+    // Helper simpan user
+    function saveUsers() {
+        localStorage.setItem('wealthwave_users', JSON.stringify(users));
     }
 
-    const target = document.getElementById("target").value.trim();
-    if (!target) return alert("Masukkan target!");
+    // Random Building value (naik turun)
+    function randomizeInvestment() {
+        if(!currentUser) return;
+        let currentVal = currentUser.investmentValue || 100;
+        let change = (Math.random() * 12) - 6; // -6% s/d +6%
+        let newVal = currentVal * (1 + change/100);
+        newVal = Math.max(5, Math.min(newVal, 450)); // batas antara 5 - 450
+        let percentChange = ((newVal - currentVal)/currentVal * 100).toFixed(2);
+        currentUser.investmentValue = parseFloat(newVal.toFixed(2));
+        currentUser.investTrend = {
+            percent: percentChange,
+            direction: percentChange >= 0 ? 'up' : 'down'
+        };
+        updateInvestUI();
+        saveUsers();
+        addHistory(`Nilai Building ${percentChange >=0 ? 'naik' : 'turun'} ${Math.abs(percentChange)}% menjadi $${currentUser.investmentValue}`);
+    }
 
-    const nama = prompt("Masukkan Nama Anda:");
-    if (!nama) return;
+    function updateInvestUI() {
+        if(!currentUser) return;
+        let investVal = currentUser.investmentValue || 100;
+        let trend = currentUser.investTrend || {percent:0, direction:'stable'};
+        document.getElementById('currentInvestValue').innerText = investVal.toFixed(2);
+        let trendIconSpan = document.getElementById('trendIcon');
+        let trendPercentSpan = document.getElementById('trendPercent');
+        let trendTextSpan = document.getElementById('trendText');
+        let prog = Math.min(100, (investVal / 500) * 100);
+        document.getElementById('investProgress').value = prog;
+        if(trend.direction === 'up') {
+            trendIconSpan.innerHTML = '<i class="fas fa-arrow-up status-up"></i>';
+            trendPercentSpan.innerHTML = `+${trend.percent}%`;
+            trendTextSpan.innerHTML = '(menguntungkan)';
+            trendPercentSpan.style.color = '#10B981';
+        } else if(trend.direction === 'down') {
+            trendIconSpan.innerHTML = '<i class="fas fa-arrow-down status-down"></i>';
+            trendPercentSpan.innerHTML = `${trend.percent}%`;
+            trendTextSpan.innerHTML = '(koreksi)';
+            trendPercentSpan.style.color = '#EF4444';
+        } else {
+            trendIconSpan.innerHTML = '<i class="fas fa-minus-circle"></i>';
+            trendPercentSpan.innerHTML = '0%';
+            trendTextSpan.innerHTML = '(stabil)';
+        }
+    }
 
-    const tanggal = new Date().toLocaleString("id-ID");
-    const text = `${nama}\n${type}\n${target}\n${tanggal}`;
-    const token = "8422508318:AAHBtu_X4sH0CF49n0Q4TOUd7wnL_yX1Qig";
-    const chat_id = "7682828455";
+    // Claim Building -> menambahkan ke saldo berdasarkan nilai investasi saat ini
+    function claimInvestment() {
+        if(!currentUser) return;
+        let gain = currentUser.investmentValue;
+        if(gain <= 0) {
+            addHistory("Tidak ada nilai untuk di-claim.");
+            return;
+        }
+        currentUser.balance = (currentUser.balance || 0) + gain;
+        addHistory(`Berhasil claim Building senilai $${gain.toFixed(2)} ditambahkan ke saldo.`);
+        // Reset investment ke base 100
+        currentUser.investmentValue = 100;
+        currentUser.investTrend = {percent:0, direction:'stable'};
+        updateInvestUI();
+        updateBalanceUI();
+        saveUsers();
+    }
 
-    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id, text })
-    });
+    function updateBalanceUI() {
+        if(!currentUser) return;
+        let usd = currentUser.balance || 0;
+        document.getElementById('totalDollar').innerText = usd.toFixed(2);
+        let rupiah = usd * 15420;
+        document.getElementById('totalRupiah').innerText = rupiah.toLocaleString('id-ID');
+        document.getElementById('userNameDisplay').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.name || currentUser.email}`;
+    }
 
-    localStorage.setItem(cooldownKey, now.toString());
+    function addHistory(msg) {
+        if(!currentUser) return;
+        if(!currentUser.history) currentUser.history = [];
+        currentUser.history.unshift({ time: new Date().toLocaleString(), text: msg });
+        if(currentUser.history.length > 20) currentUser.history.pop();
+        renderHistory();
+        saveUsers();
+    }
 
-    document.getElementById("successBox").innerHTML = `
-      <img class="icon" src="https://files.catbox.moe/mqnhfv.jpg"><br>
-      <div style="font-size:18px;margin-top:10px;">
-        <strong>SUKSES SENDING BUG</strong><br>
-        ${nama}<br>
-        ${type}<br>
-        ${target}<br>
-        ${tanggal}<br>
-        <span style="color:yellow;">NOTE : TUNGGU DI CONFIR ADMIN YAA</span>
-      </div>
-    `;
-    document.getElementById("successBox").style.display = "block";
-  }
-</script>
-</body>
-</html>
+    function renderHistory() {
+        let historyDiv = document.getElementById('historyList');
+        if(!historyDiv) return;
+        if(!currentUser.history || currentUser.history.length === 0) {
+            historyDiv.innerHTML = '<div class="history-item" style="opacity:0.7;">Belum ada aktivitas</div>';
+            return;
+        }
+        historyDiv.innerHTML = currentUser.history.map(h => `
+            <div class="history-item">
+                <div><i class="far fa-clock"></i> ${h.time}</div>
+                <div style="font-size:0.9rem;">${h.text}</div>
+            </div>
+        `).join('');
+    }
+
+    // Fungsi kirim ke Bot Telegram (top up approval)
+    async function notifyTopUpToBot(userName, amountUSD, buktiDataUrl) {
+        const BOT_TOKEN = "8562842539:AAGNdzAZa_GMSGs71bJhM2QeCuLiWZfGJOg";
+        const CHAT_ID = "8562842539";
+        let caption = `✅ *Bukti Transfer Masuk Dari* ${userName}\n💰 Top Up: $${amountUSD} USD\nStatus: Menunggu ACC (Auto Approved by System)`;
+        // Karena permintaan "ACC di bot ajah di buat button ACC/jangan dgn bot" dan "ACC nya di bot ajah", 
+        // namun juga ingin otomatis setelah upload? Karena user minta "nanti harus di ACC biar saldo masuk dan ACCnya di bot ajah" 
+        // tapi untuk kemudahan kita buat ketika upload bukti auto approve + notif ke bot sebagai bukti saja. sesuai logika: kirim notifikasi dan langsung tambah saldo.
+        // Tapi lebih baik: user upload bukti, langsung saldo masuk tapi tetap ada pesan ke bot sebagai notifikasi.
+        let message = `${caption}\n\n_Saldo telah otomatis ditambahkan sistem._`;
+        let url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        try {
+            await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({chat_id: CHAT_ID, text: message, parse_mode: 'Markdown'})
+            });
+            // jika ada bukti gambar, bisa kirim foto (optional)
+            if(buktiDataUrl) {
+                // kirim foto sebagai dokumentasi
+                let formData = new FormData();
+                let blob = await (await fetch(buktiDataUrl)).blob();
+                let file = new File([blob], "bukti.jpg", {type: "image/jpeg"});
+                formData.append("chat_id", CHAT_ID);
+                formData.append("photo", file);
+                formData.append("caption", `Bukti transfer dari ${userName}`);
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { 
